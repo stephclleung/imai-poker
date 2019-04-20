@@ -37,5 +37,6 @@
   "author": "ben@howdy.ai",
   "license": "MIT",
   "engines": {
-	  "node": "10.15.3"
+    "node": "10.15.3"
+  }
 }

@@ -4,7 +4,7 @@
   "description": "A starter kit for building a custom Slack bot with Botkit",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -35,5 +35,7 @@
     "slack"
   ],
   "author": "ben@howdy.ai",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+	  "node": "10.15.3"
 }

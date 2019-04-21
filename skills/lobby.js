@@ -1,13 +1,4 @@
-/*
 
-WHAT IS THIS?
-
-This module demonstrates simple uses of Botkit's conversation system.
-
-In this example, Botkit hears a keyword, then asks a question. Different paths
-through the conversation are chosen based on the user's response.
-
-*/
 
 module.exports = function(controller) {
 
@@ -49,37 +40,71 @@ module.exports = function(controller) {
 
                         // load user from storage...
                         controller.storage.users.get(message.user, function(err, user) {
+                            
+                            // Create user if not found on record
+                            if (!user) {
+                                user = {};
+                                user.id = message.user;
+                                user.tasks = [];
+                            }           
 
-                            // if user is not in a lobby (or first time not on record)
-                            if (!user || !user.currentLobby || user.currentLobby.length == 0) {
+
+
+                            // If the "currentLobby" attribute isn't in yet
+                            if (!user.currentLobby){
+                                user.currentLobby = 0;
+                                // update the db for this user at this current status, creates a "currentLobby" field
+                                controller.storage.users.save(user, function(err,saved) {                                        
+                                    if (err) {
+                                        bot.reply(message, 'I experienced an error in saving user to db: ' + err);
+                                    } else {
+                                        // do nothing 
+                                    }
+
+                                });
+                            } 
+                            
+                            /* ------------------------------------------------------------------------------------------------------------------
                                 
-                                // if storage lobbies lobby does not exist
-                                //controller.storage.lobbies.get('lobby_01', function(err, lobby) {
-                                   
-                                    //if (!lobby){
-                                        // create lobby
-                                        lobby = {};
-                                        // lobby.id set
-                                        lobby.id = 'lobby_01';
-                                        // lobby.players is an array;
-                                        lobby.players = [];
-                                    //}
+                                This is the case which player is creating a new lobby to join (but not selecting a created lobby to join)
 
-                                    // push userID to lobby.players list
-                                    lobby.players.push(message.user);
+                            ---------------------------------------------------------------------------------------------------------------------*/
+                            
+                            // If currentLobby === 0, then player is not in any game lobby
+                            if (user.currentLobby === 0) {
+                                
+                                // create lobby obj to store
+                                var lobby = {};
+                                lobby.id = 1;           // replace this with: = getNextavailableLobby(); <-- skips the full ones
+                                lobby.players = [];
+                                lobby.max_players = 6; 
+                                lobby.buy_in = 50000;
+                                lobby.min_bet = lobby.buy_in / 25;
 
-                                    // set user.currentLobby to lobbyID
+                                // put player into a lobby
+                                lobby.players.push(message.user);
 
-                                //});
+                                // save onto lobbies
+                                controller.storage.lobbies.save(lobby, function(err,saved) {
+                                    
+                                    if(err){
+                                        bot.reply(message, 'I experienced an error adding you to lobby: ' + err)
+                                    }else{
+                                        // register to user's currentLobby attribute
+                                        user.currentLobby = lobby.id; 
+                                        // report
+                                        var text = 'Certainly, <@' + message.user + '>! You\'re in a lobby now.\n';
+                                        bot.reply(message, text);
+                                    }
+                                    
+                                    
+                                });
 
-                                var text = 'Certainly, <@' + message.user + '>! You\'re in a lobby now, please wait for a while.\n';
-
-                                bot.reply(message, text);
 
                             } else {
 
-                                var text = '<@' + message.user + '>, you\'re currently already in a lobby.\n';
-
+                                // this player is already in a lobby, ask player to wait
+                                var text = '<@' + message.user + '>, you\'re currently already queing in a lobby, please wait for other players to join.\n';
                                 bot.reply(message, text);
 
                             }

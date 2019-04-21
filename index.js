@@ -71,6 +71,12 @@ var bot_options = {
     studio_command_uri: process.env.studio_command_uri
 };
 
+if (process.env.MYSQL_URI)
+{
+    var mySQLStorage = require ( mysql )({ URI });
+    bot_options.storage_2 = mySQLStorage;
+}
+
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
 if (process.env.MONGO_URI) {
@@ -88,6 +94,7 @@ if (process.env.MONGO_URI) {
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot(bot_options);
+
 
 controller.startTicking();
 

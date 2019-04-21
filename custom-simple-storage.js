@@ -35,6 +35,7 @@ module.exports = function(config) {
     var teams_db = new Store(config.path + '/teams', {saveId: 'id'});
     var users_db = new Store(config.path + '/users', {saveId: 'id'});
     var channels_db = new Store(config.path + '/channels', {saveId: 'id'});
+    var lobbies_db = new Store(config.path + '/lobbies', {saveId: 'id'});
 
     var objectsToList = function(cb) {
         return function(err, data) {
@@ -89,6 +90,20 @@ module.exports = function(config) {
             },
             all: function(cb) {
                 channels_db.all(objectsToList(cb));
+            }
+        },
+        lobbies: {
+            get: function(lobby_id, cb) {
+                lobbies_db.get(lobby_id, cb);
+            },
+            save: function(lobby, cb) {
+                lobbies_db.save(lobby.id, lobby, cb);
+            },
+            delete: function(lobby_id, cb) {
+                lobbies_db.delete(lobby_id, cb);
+            },
+            all: function(cb) {
+                lobbies_db.all(objectsToList(cb));
             }
         }
     };

@@ -77,7 +77,12 @@ if (process.env.MONGO_URI) {
     var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
     bot_options.storage = mongoStorage;
 } else {
-    bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
+    // Using custom simple storage for local 
+    const custom_simple_storage = require('./custom-simple-storage.js')({path: __dirname + '/.data/db/'});
+    bot_options.storage = custom_simple_storage;
+    
+    // Unblock below to use the original local storing system
+    //bot_options.json_file_store = __dirname + '/.data/db/'; // store user data in a simple JSON format
 }
 //------------------------------------------------------- Option completed for creating controller (next)
 

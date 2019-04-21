@@ -46,19 +46,60 @@ module.exports = function(controller) {
                         convo.say(str);
                         convo.next();
                         // do something awesome here.
+
+                        // load user from storage...
+                        controller.storage.users.get(message.user, function(err, user) {
+
+                            // if user is not in a lobby (or first time not on record)
+                            if (!user || !user.currentLobby || user.currentLobby.length == 0) {
+                                
+                                // if storage lobbies lobby does not exist
+                                //controller.storage.lobbies.get('lobby_01', function(err, lobby) {
+                                   
+                                    //if (!lobby){
+                                        // create lobby
+                                        lobby = {};
+                                        // lobby.id set
+                                        lobby.id = 'lobby_01';
+                                        // lobby.players is an array;
+                                        lobby.players = [];
+                                    //}
+
+                                    // push userID to lobby.players list
+                                    lobby.players.push(message.user);
+
+                                    // set user.currentLobby to lobbyID
+
+                                //});
+
+                                var text = 'Certainly, <@' + message.user + '>! You\'re in a lobby now, please wait for a while.\n';
+
+                                bot.reply(message, text);
+
+                            } else {
+
+                                var text = '<@' + message.user + '>, you\'re currently already in a lobby.\n';
+
+                                bot.reply(message, text);
+
+                            }
+
+                        });
+
+
                     }
                 },
                 {
                     pattern: "no",
                     callback: function(reply, convo) {
-                        convo.say('Too bad');
+                        convo.say('Maybe next time.');
                         convo.next();
                     }
                 },
                 {
                     default: true,
                     callback: function(reply, convo) {
-                        // do nothing
+                        convo.say('\(... did not get a response...\)');
                     }
                 }
             ]);

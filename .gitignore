@@ -7,9 +7,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # .data/db
-.data/db/users/*.json
-.data/db/channels/*.json
-.data/db/teams/*.json
+.data/db/*/*.json
 THE340613.json
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

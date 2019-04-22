@@ -75,6 +75,9 @@ module.exports = function(controller) {
                             // If currentLobby === 0, then player is not in any game lobby
                             if (user.currentLobby === 0) {
                                 
+                                // Get the next available lobby in lobbies. (If there is no lobby in db, then return NULL)
+                                //lobby = get
+                                // if lobby is null
                                 // create lobby obj to store
                                 var lobby = {};
                                 lobby.id = '1';           // replace this with: = getNextavailableLobby(); <-- skips the full ones

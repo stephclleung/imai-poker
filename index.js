@@ -51,7 +51,7 @@ This bot demonstrates many of the core features of Botkit:
 var env = require('node-env-file');
 env(__dirname + '/.env');
 
-if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
+if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT) {
   usage_tip();
   // process.exit(1);
 }
@@ -62,20 +62,17 @@ var debug = require('debug')('botkit:main');
 
 //-------------------------------------- Bot Option Setup, see https://botkit.ai/docs/readme-slack.html
 var bot_options = {
-    clientId: process.env.clientId,
-    clientSecret: process.env.clientSecret,
-    clientSigningSecret: process.env.clientSigningSecret,
-    // debug: true,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    clientSigningSecret: process.env.CLIENT_SIGNING_SECRET,
+    debug: true,
     scopes: ['bot'],
-    studio_token: process.env.studio_token,
-    studio_command_uri: process.env.studio_command_uri
+    //studio_token: process.env.studio_token,
+    
+    //studio_command_uri: process.env.studio_command_uri
 };
 
-if (process.env.MYSQL_URI)
-{
-    var mySQLStorage = require ( mysql )({ URI });
-    bot_options.storage_2 = mySQLStorage;
-}
+
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
@@ -96,13 +93,14 @@ if (process.env.MONGO_URI) {
 var controller = Botkit.slackbot(bot_options);
 
 
+
 controller.startTicking();
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
 
-if (!process.env.clientId || !process.env.clientSecret) {
-
+if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
+  console.log("Im here becase no client id!!!!!!!!!")
   // Load in some helpers that make running Botkit on Glitch.com better
   require(__dirname + '/components/plugin_glitch.js')(controller);
 

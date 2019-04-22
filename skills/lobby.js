@@ -1,5 +1,7 @@
 
 
+
+
 module.exports = function(controller) {
 
     controller.hears(['poker'], 'direct_message,direct_mention', function(bot, message) {
@@ -75,7 +77,7 @@ module.exports = function(controller) {
                                 
                                 // create lobby obj to store
                                 var lobby = {};
-                                lobby.id = 1;           // replace this with: = getNextavailableLobby(); <-- skips the full ones
+                                lobby.id = '1';           // replace this with: = getNextavailableLobby(); <-- skips the full ones
                                 lobby.players = [];
                                 lobby.max_players = 6; 
                                 lobby.buy_in = 50000;
@@ -92,9 +94,23 @@ module.exports = function(controller) {
                                     }else{
                                         // register to user's currentLobby attribute
                                         user.currentLobby = lobby.id; 
-                                        // report
-                                        var text = 'Certainly, <@' + message.user + '>! You\'re in a lobby now.\n';
-                                        bot.reply(message, text);
+
+                                        
+                                        controller.storage.users.save(user, function(err,saved) {
+
+                                            if (err) {
+                                                bot.reply(message, 'I experienced an error adding your task: ' + err);
+                                            } else {
+                                                // This is a callback to user save, which is inside the callback of lobby save. Report.
+                                                var text = 'Certainly, <@' + message.user + '>! You\'re in a lobby now.\n';
+                                                bot.reply(message, text);
+
+                                        
+                                            }
+                            
+                                        });
+
+
                                     }
                                     
                                     

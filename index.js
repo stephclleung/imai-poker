@@ -48,8 +48,8 @@ This bot demonstrates many of the core features of Botkit:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-var env = require('node-env-file');
-env(__dirname + '/.env');
+//var env = require('node-env-file');
+//env(__dirname + '/.env');
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT) {
   usage_tip();
@@ -76,8 +76,8 @@ var bot_options = {
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
-if (process.env.MONGO_URI) {
-    var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGO_URI});
+if (process.env.MONGODB_URI) {
+    var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.MONGODB_URI});
     bot_options.storage = mongoStorage;
 } else {
     // Using custom simple storage for local 
@@ -100,7 +100,6 @@ controller.startTicking();
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
-  console.log("Im here becase no client id!!!!!!!!!")
   // Load in some helpers that make running Botkit on Glitch.com better
   require(__dirname + '/components/plugin_glitch.js')(controller);
 

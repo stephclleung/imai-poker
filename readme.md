@@ -1,8 +1,8 @@
-#  Oregon State University Spring 19 Capstone Project : PokerBot
-*  Team Imai Members :
-  *  Stephanie Leung [github.com/stephclleung](github.com/stephclleung)
-  *  Brian Tsui [github.com/BrianTsui2018](github.com/BrianTsui2018)
-  *  Noah Buchen [https://github.com/NBnfork](https://github.com/NBnfork)
+#  OSU Spring 19 Capstone Project : PokerBot
+Team Imai Members :
+  *  Stephanie Leung [github.com/stephclleung](https://github.com/stephclleung)
+  *  Brian Tsui [github.com/BrianTsui2018](https://github.com/BrianTsui2018)
+  *  Noah Buchen [github.com/NBnfork](https://github.com/NBnfork)
 
 ## Objective :
 *  A Slack bot that allows colleages/friends to play a hand of Texas Holdem Poker!
